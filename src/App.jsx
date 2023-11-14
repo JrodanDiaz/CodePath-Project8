@@ -11,6 +11,7 @@ import EditPost from "./pages/Post/EditPost/EditPost";
 function App() {
   const [posts, setPosts] = useState([]);
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPosts();
@@ -18,12 +19,17 @@ function App() {
   }, []);
 
   const fetchPosts = async () => {
-    const { data } = await supabase
+    setLoading(true);
+    const { data, error } = await supabase
       .from("Posts")
       .select()
       .order("created_at", { ascending: false });
 
     setPosts(data);
+    if (error) {
+      console.error(error);
+    }
+    setLoading(false);
   };
 
   function generateRandomGamertag() {
@@ -80,7 +86,7 @@ function App() {
       <BrowserRouter>
         <Navbar posts={posts} />
         <Routes>
-          <Route path="/" element={<Home posts={posts} />} />
+          <Route path="/" element={<Home posts={posts} loading={loading} />} />
           <Route
             path="/posts/create"
             element={<NewPost username={username} />}
@@ -91,6 +97,7 @@ function App() {
               <ViewPost
                 posts={posts}
                 fetchPosts={fetchPosts}
+                loading={loading}
                 username={username}
               />
             }

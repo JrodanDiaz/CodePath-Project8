@@ -5,8 +5,9 @@ import commentsIcon from "/comments.svg";
 import supabase from "../../../supabase/supabase";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { PacmanLoader } from "react-spinners";
 
-export default function ViewPost({ posts, fetchPosts, username }) {
+export default function ViewPost({ posts, fetchPosts, loading, username }) {
   const { id } = useParams();
   const post = posts.filter((post) => post.id == id);
   const [comment, setComment] = useState("");
@@ -18,7 +19,6 @@ export default function ViewPost({ posts, fetchPosts, username }) {
   const handleCommentChange = (e) => {
     e.preventDefault();
     setComment(e.target.value);
-    console.log(comment);
   };
 
   const handleCommentSubmit = async (e) => {
@@ -32,9 +32,7 @@ export default function ViewPost({ posts, fetchPosts, username }) {
       .from("Posts")
       .update({ comments: newComments })
       .eq("id", post[0].id);
-    if (error) {
-      console.error(error);
-    }
+    if (error) console.error(error);
     setComment("");
   };
 
@@ -45,17 +43,14 @@ export default function ViewPost({ posts, fetchPosts, username }) {
       .from("Posts")
       .update({ upvotes: newUpvotes })
       .eq("id", id);
-    if (error) {
-      console.error(error);
-    }
+    if (error) console.error(error);
   };
 
   const handleDelete = async (e) => {
     e.preventDefault();
     const { error } = await supabase.from("Posts").delete().eq("id", id);
-    if (error) {
-      console.error(error);
-    }
+    if (error) console.error(error);
+
     window.location = "/";
   };
 
@@ -66,7 +61,8 @@ export default function ViewPost({ posts, fetchPosts, username }) {
 
   return (
     <div className="mt-[94px] flex justify-center items-center">
-      {post[0] && timeDifferenceMessage && (
+      {loading && !post[0] && <PacmanLoader color="#e60fbc" size={75} />}
+      {post[0] && (
         <div className=" bg-black border-[1px]  border-white w-6/12 px-10 py-8 my-10 flex flex-col gap-6 rounded-sm shadow-lg">
           <p className="text-white">
             Posted {timeDifferenceMessage} by {post[0].username}
