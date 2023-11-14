@@ -1,10 +1,10 @@
-# Web Development Final Project - _Name of App Here_
+# Web Development Final Project - 4StringsForum
 
 Submitted by: Jordan Diaz
 
-This web app: **insert description**
+This web app: A forum for anything related to stringed instruments, primarily basses and guitars
 
-Time spent: **X** hours spent in total
+Time spent: 6 hours spent in total
 
 ## Required Features
 
