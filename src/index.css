@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* background-color: blanchedalmond; */
+  @apply bg-main-darknavy;
+}
+
+.nav-btn {
+  @apply text-xl px-4 py-2 bg-main-purple rounded-sm cursor-pointer;
+}
+
+.new-post-input {
+  @apply bg-gray-100 py-1 px-2 rounded-sm;
+}
