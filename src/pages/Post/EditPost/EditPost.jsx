@@ -23,6 +23,15 @@ export default function EditPost({ posts }) {
     });
   }, []);
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    if (!isValidKey()) return;
+    const { error } = await supabase.from("Posts").delete().eq("id", id);
+    if (error) console.error(error);
+
+    window.location = "/";
+  };
+
   const handleInputChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -92,12 +101,20 @@ export default function EditPost({ posts }) {
               handleInputChange={handleInputChange}
             />
 
-            <button
-              type="submit"
-              className=" bg-main-pink py-2 px-4 rounded-sm font-semibold text-white w-56"
-            >
-              Edit Post
-            </button>
+            <div className="flex justify-center items-center gap-4 w-11/12">
+              <button
+                type="submit"
+                className=" bg-main-pink py-2 px-4 rounded-sm font-semibold text-white grow"
+              >
+                Edit Post
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-main-pink py-2 px-4 text-white font-semibold grow rounded-sm"
+              >
+                Delete
+              </button>
+            </div>
           </form>
         )}
       </div>

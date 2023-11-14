@@ -10,6 +10,7 @@ export default function NewPost({ username }) {
     url: "",
     username: username,
     content: "",
+    key: "",
   });
   const [flag, setFlag] = useState("");
 
@@ -42,8 +43,10 @@ export default function NewPost({ username }) {
             onSubmit={submitPost}
             className="flex flex-col justify-center items-center gap-2 w-full"
           >
-            <h1 className="text-white w-11/12">Posting as: {username}</h1>
-            <DropdownMenu setFlag={setFlag} />
+            <div className="flex justify-between items-center w-11/12">
+              <h1 className="text-white">Posting as: {username}</h1>
+              <DropdownMenu setFlag={setFlag} />
+            </div>
             <NewPostText
               name={"title"}
               placeholder={"Title"}
@@ -65,6 +68,11 @@ export default function NewPost({ username }) {
               placeholder="URL (Optional)"
               handleInputChange={handleInputChange}
               value={postData.url}
+            />
+            <NewPostText
+              name="key"
+              placeholder="Key"
+              handleInputChange={handleInputChange}
             />
 
             <button

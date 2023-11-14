@@ -11,6 +11,10 @@ export default function ViewPost({ posts, fetchPosts, loading, username }) {
   const { id } = useParams();
   const post = posts.filter((post) => post.id == id);
   const [comment, setComment] = useState("");
+  const [selectedComment, setSelectedComment] = useState("");
+  const [key, setKey] = useState("");
+  const [showInput, setShowInput] = useState(null);
+  const [isKeyValid, setIsKeyValid] = useState(true);
 
   useEffect(() => {
     fetchPosts();
@@ -46,12 +50,32 @@ export default function ViewPost({ posts, fetchPosts, loading, username }) {
     if (error) console.error(error);
   };
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase.from("Posts").delete().eq("id", id);
-    if (error) console.error(error);
+  const onDeleteClick = (index) => {
+    setSelectedComment(post[0].comments[index]);
+    setShowInput(index);
+  };
 
-    window.location = "/";
+  const isValidKey = () => {
+    const result = post[0].key === key;
+    setIsKeyValid(result);
+    return result;
+  };
+
+  const handleCommentDelete = async (e) => {
+    e.preventDefault();
+    if (!isValidKey()) {
+      setKey("");
+      return;
+    }
+    const updatedComments = post[0].comments.filter(
+      (comment) => comment != selectedComment
+    );
+    const { error } = await supabase
+      .from("Posts")
+      .update({ comments: updatedComments })
+      .eq("id", id);
+    if (error) console.error(error);
+    setShowInput(null);
   };
 
   let timeDifferenceMessage;
@@ -89,12 +113,6 @@ export default function ViewPost({ posts, fetchPosts, loading, username }) {
                   Edit
                 </button>
               </Link>
-              <button
-                onClick={handleDelete}
-                className="bg-main-pink py-2 px-4 text-white rounded-sm"
-              >
-                Delete
-              </button>
             </div>
           </div>
           <div
@@ -102,14 +120,48 @@ export default function ViewPost({ posts, fetchPosts, loading, username }) {
               post[0].comments ? `border-2 border-main-orange` : ``
             } rounded-lg`}
           >
+            {!isKeyValid && <p className="text-red-600">Error: Invalid Key</p>}
             {post[0].comments &&
               post[0].comments.map((comment, i) => (
-                <p
-                  key={`comment-${i}`}
-                  className="text-white pb-2 border-b-[1px] border-b-gray-500"
-                >
-                  {comment}
-                </p>
+                <div className="flex flex-col gap-2" key={`comment-${i}`}>
+                  <div className="flex justify-between items-center w-full pb-1 border-b-[1px] border-b-gray-500">
+                    <p className="text-white ">{comment}</p>
+                    <div className="flex justify-center items-center gap-2">
+                      <img
+                        src="/edit.svg"
+                        className="w-6 h-6 cursor-pointer"
+                        alt="edit"
+                      />
+                      <img
+                        src="/delete.svg"
+                        className=" w-6 h-6  cursor-pointer"
+                        alt="delete"
+                        onClick={() => onDeleteClick(i)}
+                      />
+                    </div>
+                  </div>
+
+                  {showInput == i && (
+                    <form
+                      className="bg-main-darknavy border-2 border-main-orange flex items-center rounded-full"
+                      onSubmit={handleCommentDelete}
+                    >
+                      <input
+                        type="text"
+                        className=" bg-transparent text-white p-2 px-4 w-full outline-none border-none rounded-full"
+                        placeholder="Enter Key"
+                        value={key}
+                        onChange={(e) => setKey(e.target.value)}
+                      />
+                      <button
+                        type="submit"
+                        className="bg-main-orange px-5 py-2 rounded-full"
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  )}
+                </div>
               ))}
 
             <div>
