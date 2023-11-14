@@ -15,20 +15,18 @@ export default function Home({ posts }) {
   };
 
   const filterPosts = () => {
-    if (filter === "any") {
+    if (filter == "any") {
       return posts;
     } else {
-      const filteredPosts = posts.filter((post) => post.flag === filter);
-      console.log("filteredPosts: ", filteredPosts);
-      console.log("filterPosts running..");
+      const filteredPosts = posts.filter((post) => post.flag == filter);
       return filteredPosts;
     }
   };
 
-  const filteredPostResults = filterPosts;
+  const filteredPostResults = filterPosts();
 
-  const sortedPosts = posts.sort((a, b) => {
-    console.log(Array.isArray(filteredPostResults));
+  const sortedPosts = filterPosts().sort((a, b) => {
+    console.log(filteredPostResults);
     console.log(`Is posts array: ${Array.isArray(posts)}`);
     if (sortBy === "newest") {
       return new Date(b.created_at) - new Date(a.created_at);
@@ -71,25 +69,25 @@ export default function Home({ posts }) {
         </button>
         <button
           className={`px-2 py-1 bg-main-pink text-white rounded-md ${
-            filter === "question" ? "bg-opacity-100" : "bg-opacity-50"
+            filter === "Question" ? "bg-opacity-100" : "bg-opacity-50"
           }`}
-          onClick={() => handleFilter("question")}
+          onClick={() => handleFilter("Question")}
         >
           Questions
         </button>
         <button
           className={`px-2 py-1 bg-main-pink text-white rounded-md ${
-            filter === "question" ? "bg-opacity-100" : "bg-opacity-50"
+            filter === "Flex" ? "bg-opacity-100" : "bg-opacity-50"
           }`}
-          onClick={() => handleFilter("question")}
+          onClick={() => handleFilter("Flex")}
         >
           Flex
         </button>
         <button
           className={`px-2 py-1 bg-main-pink text-white rounded-md ${
-            filter === "question" ? "bg-opacity-100" : "bg-opacity-50"
+            filter === "Controversial" ? "bg-opacity-100" : "bg-opacity-50"
           }`}
-          onClick={() => handleFilter("question")}
+          onClick={() => handleFilter("Controversial")}
         >
           Controversial
         </button>
