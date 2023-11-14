@@ -10,7 +10,6 @@ export default function DropdownMenu({ setFlag }) {
   const handleItemClick = (flag) => {
     setCurrentFlag(flag);
     setFlag(flag);
-    console.log(`Flag btn clicked`);
   };
   return (
     <Menu as="div" className="relative inline-block text-left">

@@ -21,7 +21,6 @@ export default function Navbar({ posts }) {
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value);
-    console.log(`searchInputChange: ${searchInput}`);
   };
 
   return (

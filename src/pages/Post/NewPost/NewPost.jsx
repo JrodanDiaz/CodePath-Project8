@@ -15,7 +15,6 @@ export default function NewPost({ username }) {
 
   useEffect(() => {
     setPostData((prev) => ({ ...prev, flag: flag }));
-    console.log(`useeffect ran flag`);
   }, [flag]);
 
   const handleInputChange = (e) => {
