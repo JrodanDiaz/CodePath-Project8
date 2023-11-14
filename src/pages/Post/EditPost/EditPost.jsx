@@ -5,8 +5,15 @@ import supabase from "../../../supabase/supabase";
 
 export default function EditPost({ posts }) {
   const { id } = useParams();
-  const [postData, setPostData] = useState({ title: "", content: "", url: "" });
+  const [isKeyValid, setIsKeyValid] = useState(true);
+  const [postData, setPostData] = useState({
+    title: "",
+    content: "",
+    url: "",
+    key: "",
+  });
   const post = posts.filter((post) => post.id == id);
+  const postKey = post[0].key;
 
   useEffect(() => {
     setPostData({
@@ -22,8 +29,15 @@ export default function EditPost({ posts }) {
     setPostData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const isValidKey = () => {
+    const result = postKey === postData.key;
+    setIsKeyValid(result);
+    return result;
+  };
+
   const submitUpdatedPost = async (e) => {
     e.preventDefault();
+    if (!isValidKey()) return;
     const { error } = await supabase
       .from("Posts")
       .update({
@@ -42,6 +56,9 @@ export default function EditPost({ posts }) {
   return (
     <div className="mt-[94px] flex justify-center items-center">
       <div className="bg-black border-[1px] border-white w-2/5 shadow-md rounded-md px-5 py-8 my-8 flex flex-col justify-evenly items-center">
+        {!isKeyValid && (
+          <p className="text-red-600 text-md">Error: Invalid Key</p>
+        )}
         {post[0] && (
           <form
             onSubmit={submitUpdatedPost}
@@ -66,6 +83,12 @@ export default function EditPost({ posts }) {
               name="url"
               placeholder="URL (Optional)"
               defaultValue={post[0].url}
+              handleInputChange={handleInputChange}
+            />
+
+            <NewPostText
+              name="key"
+              placeholder="Key"
               handleInputChange={handleInputChange}
             />
 
