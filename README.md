@@ -43,6 +43,11 @@ Here's a walkthrough of the project
 
 ![WalkthroughCodePathProject8](https://github.com/JrodanDiaz/CodePath-Project8/assets/129818825/16d0b9d5-f253-41b7-9590-dc9f2de5ed49)
 
+## Added Loading Animation and Secret Key Stretch Features:
+
+![WalkthroughCodePathProject8](https://github.com/JrodanDiaz/CodePath-Project8/assets/129818825/f01b7d18-d6c1-4d64-9587-46f412a915bc)
+
+
 GIF created with LiceCap
 
 ## License
